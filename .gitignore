@@ -25,3 +25,4 @@ pnpm-debug.log*
 # local Codex skill installs
 .agents/
 skills-lock.json
+.vercel
