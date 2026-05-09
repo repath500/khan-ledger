@@ -15,8 +15,7 @@ import {
   MapPinLine,
   ShieldCheck,
   Sparkle,
-  UsersThree,
-  Wallet
+  UsersThree
 } from "@phosphor-icons/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -43,6 +42,13 @@ const allocations = [
   { name: "Property", value: 20, amount: "€80", color: "var(--gold)" },
   { name: "Land", value: 5, amount: "€20", color: "var(--sage)" },
   { name: "Private", value: 5, amount: "€20", color: "var(--ink)" }
+];
+
+const indexTickers = [
+  { symbol: "SPX", name: "S&P 500" },
+  { symbol: "MSCI", name: "MSCI World" },
+  { symbol: "NDX", name: "Nasdaq 100" },
+  { symbol: "FTSE", name: "FTSE All-World" }
 ];
 
 const buckets = [
@@ -175,6 +181,51 @@ function LedgerMap() {
         <text x="596" y="130">Ireland</text>
       </svg>
     </div>
+  );
+}
+
+function AllocationRing() {
+  const r = 80;
+  const cx = 110;
+  const cy = 110;
+  const C = 2 * Math.PI * r;
+  const gap = 4;
+
+  const arcs = allocations.map((item) => (item.value / 100) * C);
+  const offsets = arcs.map((_, i) => arcs.slice(0, i).reduce((s, a) => s + a, 0));
+
+  return (
+    <svg
+      viewBox="0 0 220 220"
+      className="allocation-ring"
+      role="img"
+      aria-label="Portfolio allocation ring: 35% Index, 35% Reserve, 20% Property, 5% Land, 5% Private — €400 per month total"
+    >
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(31,33,29,0.06)" strokeWidth="30" />
+      {allocations.map((item, i) => {
+        const vis = Math.max(arcs[i] - gap, 0);
+        return (
+          <circle
+            key={item.name}
+            cx={cx}
+            cy={cy}
+            r={r}
+            fill="none"
+            stroke={item.color}
+            strokeWidth="30"
+            strokeDasharray={`${vis} ${C}`}
+            strokeDashoffset={-offsets[i]}
+            transform={`rotate(-90 ${cx} ${cy})`}
+          />
+        );
+      })}
+      <text x={cx} y={cy - 4} textAnchor="middle" className="ring-total">
+        €400
+      </text>
+      <text x={cx} y={cy + 18} textAnchor="middle" className="ring-label">
+        / month
+      </text>
+    </svg>
   );
 }
 
@@ -366,29 +417,30 @@ export function LandingPage() {
                 />
               ))}
             </div>
-            <div className="allocation-legend">
-              {allocations.map((item) => (
-                <div key={item.name}>
-                  <span style={{ background: item.color }} />
-                  <strong>{item.value}%</strong>
-                  <small>
-                    {item.name} · {item.amount}
-                  </small>
-                </div>
-              ))}
+            <div className="allocation-chart-area">
+              <AllocationRing />
+              <div className="allocation-legend">
+                {allocations.map((item) => (
+                  <div key={item.name} className="legend-item">
+                    <div className="legend-dot" style={{ background: item.color }} />
+                    <div className="legend-body">
+                      <div className="legend-row">
+                        <strong>{item.value}%</strong>
+                        <small>{item.name} · {item.amount}</small>
+                      </div>
+                      {item.name === "Index" && (
+                        <div className="ticker-chips">
+                          {indexTickers.map((t) => (
+                            <span key={t.symbol} className="ticker-chip">{t.name}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <aside className="reserve-card">
-            <div className="reserve-icon">
-              <Wallet size={25} weight="light" />
-            </div>
-            <p>First milestone</p>
-            <strong>€5,000 reserve</strong>
-            <div className="progress-track">
-              <span />
-            </div>
-            <small>Starting with discipline before scale.</small>
-          </aside>
         </div>
       </section>
 
