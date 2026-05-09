@@ -21,7 +21,14 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const navItems = ["Ledger", "Portfolio", "Entries", "Allocation", "Story"];
+const navItems = [
+  { label: "Ledger", href: "#ledger" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Entries", href: "#entries" },
+  { label: "Allocation", href: "#allocation" },
+  { label: "Story", href: "#story" },
+  { label: "Contact", href: "/contact" }
+];
 
 const metrics = [
   { value: "€400", label: "monthly commitment" },
@@ -264,8 +271,8 @@ export function LandingPage() {
         </a>
         <div className="nav-links">
           {navItems.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`}>
-              {item}
+            <a key={item.label} href={item.href}>
+              {item.label}
             </a>
           ))}
         </div>
@@ -284,12 +291,12 @@ export function LandingPage() {
       <div className={`mobile-menu ${menuOpen ? "is-open" : ""}`}>
         {navItems.map((item, index) => (
           <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
+            key={item.label}
+            href={item.href}
             style={{ transitionDelay: `${index * 55 + 90}ms` }}
             onClick={() => setMenuOpen(false)}
           >
-            {item}
+            {item.label}
           </a>
         ))}
       </div>
@@ -525,7 +532,7 @@ export function LandingPage() {
               <CalendarBlank size={18} weight="light" /> Local businesses
             </span>
           </div>
-          <MagneticButton href="mailto:hello@khanledger.com">Share an opportunity</MagneticButton>
+          <MagneticButton href="/contact">Share an opportunity</MagneticButton>
         </div>
       </section>
 
