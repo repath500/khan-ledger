@@ -18,6 +18,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const navItems = [
   { label: "Khan Ledger I", href: "#vehicle" },
   { label: "Portfolio", href: "#portfolio" },
+  { label: "Holdings", href: "#holdings" },
   { label: "Partners", href: "#partners" },
   { label: "Family", href: "#family" },
   { label: "Opportunities", href: "#opportunities" },
@@ -34,39 +35,143 @@ const metrics = [
 const allocations = [
   {
     name: "Vanguard S&P 500",
+    shortName: "S&P 500",
     pct: 35,
-    focus: "Core US market compounding via long-term index strategy",
+    focus: "Core US market compounding. Main growth engine of Khan Ledger I.",
     color: "#0B3D2E",
     cardColor: "#B99044"
   },
   {
-    name: "Global Non-US ETFs",
-    pct: 15,
-    focus: "International diversification across Europe, Asia, and emerging markets",
-    color: "#4E642F",
+    name: "Global non-US ETFs",
+    shortName: "Global ex-US",
+    pct: 20,
+    focus: "Europe, Asia, and emerging markets. Non-American equity diversification.",
+    color: "#2A6041",
     cardColor: "rgba(185,144,68,0.65)"
   },
   {
-    name: "Angel & Private Opportunities",
-    pct: 20,
-    focus:
-      "Founders, startups, operators, and private deals where our background adds value",
-    color: "#B99044",
-    cardColor: "rgba(244,239,229,0.58)"
-  },
-  {
-    name: "Property & Real Assets",
-    pct: 20,
-    focus: "Ireland, UK, and Bangladesh residential and commercial property",
-    color: "#8C7860",
-    cardColor: "rgba(244,239,229,0.4)"
-  },
-  {
-    name: "Bangladesh Land & Heritage Assets",
+    name: "Gold ETC",
+    shortName: "Gold ETC",
     pct: 10,
-    focus: "Land documentation, agriculture, and long-term family asset strategy",
+    focus: "Hard-asset hedge against crisis, currency stress, and inflation fear.",
+    color: "#B99044",
+    cardColor: "rgba(185,144,68,0.48)"
+  },
+  {
+    name: "Quality / Dividend Equity",
+    shortName: "Quality/Div",
+    pct: 10,
+    focus: "Stable company exposure. Lower-volatility equity tilt from profitable businesses.",
+    color: "#4E642F",
+    cardColor: "rgba(244,239,229,0.56)"
+  },
+  {
+    name: "Defensive Bonds / Money Market",
+    shortName: "Defensive",
+    pct: 10,
+    focus: "Portfolio ballast and rebalancing power during drawdowns and uncertainty.",
+    color: "#6B7C5E",
+    cardColor: "rgba(244,239,229,0.40)"
+  },
+  {
+    name: "Silver ETC",
+    shortName: "Silver ETC",
+    pct: 5,
+    focus: "Higher-volatility precious metal exposure with industrial demand upside.",
     color: "#A8A49B",
+    cardColor: "rgba(200,190,182,0.55)"
+  },
+  {
+    name: "Oil / Energy Tactical",
+    shortName: "Oil/Energy",
+    pct: 5,
+    focus: "Small tactical exposure to energy shocks, commodity cycles, and geopolitical upside.",
+    color: "#8B6914",
+    cardColor: "rgba(200,160,80,0.45)"
+  },
+  {
+    name: "RK+ Opportunity Sleeve",
+    shortName: "Opportunity",
+    pct: 5,
+    focus: "Angel, operator-led, and private opportunities reviewed directly by the brothers.",
+    color: "#A0522D",
     cardColor: "rgba(244,239,229,0.26)"
+  }
+];
+
+const scenarios = [
+  {
+    label: "Defensive",
+    rate: "3%",
+    value: "€115,776",
+    gain: "+€5,376",
+    note: "Conservative conditions. Bonds outperform equities."
+  },
+  {
+    label: "Base Case",
+    rate: "7%",
+    value: "€123,310",
+    gain: "+€12,910",
+    note: "Moderate global growth. Equities steady, metals stable."
+  },
+  {
+    label: "Strong Case",
+    rate: "10%",
+    value: "€129,248",
+    gain: "+€18,848",
+    note: "Good market conditions. Commodities hold their ground."
+  },
+  {
+    label: "Bull Case",
+    rate: "15%",
+    value: "€139,723",
+    gain: "+€29,323",
+    note: "Strong rally. Opportunity sleeve delivers at least one win."
+  }
+];
+
+const holdingsDistribution = [
+  {
+    name: "Bangladesh Land",
+    pct: 25,
+    description:
+      "Long-term family land assets, agricultural value, heritage holdings, and future development potential across Moulvibazar and the ancestral estate.",
+    color: "#4E642F"
+  },
+  {
+    name: "S&P 500 / Public Markets",
+    pct: 20,
+    description:
+      "Core liquid equity exposure through broad US market investing. Khan Ledger I is the primary vehicle.",
+    color: "#0B3D2E"
+  },
+  {
+    name: "Property / Real Estate",
+    pct: 20,
+    description:
+      "Ireland, UK, and Bangladesh property interests, future acquisitions, renovation projects, and real-asset-backed growth.",
+    color: "#8C7860"
+  },
+  {
+    name: "Private Equity / Ventures",
+    pct: 15,
+    description:
+      "Angel investments, founder opportunities, private deals, small equity stakes, and operator-led acquisitions.",
+    color: "#B99044"
+  },
+  {
+    name: "Cash Reserves",
+    pct: 10,
+    description:
+      "Liquidity for flexibility, legal and admin costs, deposits on opportunities, and fast-moving capital deployment.",
+    color: "#D8D4C8"
+  },
+  {
+    name: "Global ETFs / International",
+    pct: 10,
+    description:
+      "Non-US market exposure across Europe, Asia, and emerging markets. Global diversification away from single-country risk.",
+    color: "#174D36"
   }
 ];
 
@@ -230,6 +335,24 @@ function BrandIcon() {
       <rect x="16.5" y="8" width="3" height="20" fill="#B99044" />
       <rect x="8" y="16.5" width="20" height="3" fill="#B99044" />
     </svg>
+  );
+}
+
+function StackedBar({
+  segments
+}: {
+  segments: { name: string; pct: number; color: string }[];
+}) {
+  return (
+    <div className="stacked-bar" role="img" aria-label="Portfolio allocation bar">
+      {segments.map((s) => (
+        <span
+          key={s.name}
+          style={{ width: `${s.pct}%`, background: s.color }}
+          title={`${s.name}: ${s.pct}%`}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -435,10 +558,10 @@ export function LandingPage() {
             London, Frankfurt, and Bangladesh.
           </p>
           <p className="hero-lede hero-lede--secondary" data-hero>
-            Our first vehicle, Khan Ledger I, is a five-year internal capital
-            commitment designed to allocate family capital into public markets,
-            global ETFs, angel opportunities, property, Bangladesh land, and
-            operating businesses.
+            Our first vehicle, Khan Ledger I, is a five-year monthly
+            investment mandate across global markets, ETFs, precious metals,
+            energy, and a small opportunity sleeve for founders and
+            operator-led deals.
           </p>
           <div className="hero-actions" data-hero>
             <MagneticButton href="#vehicle">Explore Khan Ledger I</MagneticButton>
@@ -457,7 +580,9 @@ export function LandingPage() {
               <span className="vehicle-label">Khan Ledger I</span>
               <span className="vehicle-status">Formation</span>
             </div>
-            <p className="vehicle-subtitle">First five-year family capital vehicle</p>
+            <p className="vehicle-subtitle">
+              Five-year monthly investment mandate
+            </p>
 
             <div className="vehicle-rule" />
 
@@ -476,7 +601,7 @@ export function LandingPage() {
               </div>
               <div className="vehicle-stat">
                 <span>Mandate</span>
-                <strong>Markets · Ventures · Property · Land</strong>
+                <strong>Markets · Metals · Energy · Ventures</strong>
               </div>
             </div>
 
@@ -486,7 +611,7 @@ export function LandingPage() {
             <div className="vehicle-allocs">
               {allocations.map((a) => (
                 <div className="vehicle-alloc-row" key={a.name}>
-                  <span className="vehicle-alloc-name">{a.name}</span>
+                  <span className="vehicle-alloc-name">{a.shortName}</span>
                   <div className="vehicle-alloc-track">
                     <span
                       className="vehicle-alloc-fill"
@@ -515,28 +640,28 @@ export function LandingPage() {
       <section className="section vehicle-section" id="vehicle">
         <div className="section-heading" data-reveal>
           <p className="eyebrow">Khan Ledger I</p>
-          <h2>The first five-year family capital vehicle.</h2>
+          <h2>Monthly capital, globally allocated.</h2>
         </div>
         <div className="vehicle-intro-grid" data-reveal>
           <p>
-            Khan Ledger I is the first formal RK+ vehicle: a five-year capital
-            commitment plan designed to move the brothers from informal ambition
-            into structured allocation. It begins with monthly contributions,
-            doubles through the early years, and maintains a disciplined
-            commitment through year five.
+            Khan Ledger I is the first RK+ monthly investment vehicle — not a
+            savings pot and not a fake private equity fund. It is a
+            contribution-led portfolio built around global markets, ETFs,
+            precious metals, energy exposure, and a small RK+ opportunity
+            sleeve for founders and operator-led deals.
           </p>
           <p>
-            The goal is not simply to save money. The goal is to build a
-            repeatable capital allocation system — with records, roles,
-            opportunity review, and long-term discipline. The first fund is
-            called Khan Ledger I. Future vehicles will follow.
+            The mandate is simple: build discipline, stay globally diversified,
+            keep exposure to hard assets, and leave room for asymmetric
+            opportunities. The goal is to build a capital system that can
+            compound, rebalance, and create opportunity flow over five years.
           </p>
         </div>
 
         <div className="kl1-card" data-reveal>
           <div className="kl1-card__col">
             <p className="kl1-label">Vehicle Type</p>
-            <p className="kl1-value">Internal family capital vehicle</p>
+            <p className="kl1-value">Monthly investment vehicle</p>
           </div>
           <div className="kl1-card__col">
             <p className="kl1-label">Term</p>
@@ -547,12 +672,12 @@ export function LandingPage() {
             <p className="kl1-value">€110,400</p>
           </div>
           <div className="kl1-card__col">
-            <p className="kl1-label">Geography</p>
-            <p className="kl1-value">Ireland · UK · Germany · Bangladesh</p>
+            <p className="kl1-label">Rebalancing</p>
+            <p className="kl1-value">Quarterly</p>
           </div>
           <div className="kl1-card__col">
-            <p className="kl1-label">Focus</p>
-            <p className="kl1-value">Markets · Ventures · Property · Land · Operators</p>
+            <p className="kl1-label">Allocation Review</p>
+            <p className="kl1-value">Annual</p>
           </div>
           <div className="kl1-card__col">
             <p className="kl1-label">Status</p>
@@ -565,32 +690,156 @@ export function LandingPage() {
       <section className="section portfolio-section" id="portfolio">
         <div className="section-heading" data-reveal>
           <p className="eyebrow">Portfolio Mandate</p>
-          <h2>Capital with a job.</h2>
+          <h2>Khan Ledger I: Monthly capital, globally allocated.</h2>
         </div>
         <p className="portfolio-intro" data-reveal>
-          Khan Ledger I is not designed as a savings pot. It is a five-year
-          capital allocation vehicle — each bucket has a specific mandate,
-          risk profile, and long-term purpose.
+          Khan Ledger I is built as a monthly investment vehicle, not a savings
+          pot. Every contribution is split across global equity exposure,
+          non-US diversification, hard assets, defensive liquidity, energy, and
+          a small RK+ opportunity sleeve.
         </p>
+
+        <StackedBar segments={allocations} />
+
+        <div className="portfolio-layout" data-reveal>
+          <div className="portfolio-table">
+            {allocations.map((a) => (
+              <div className="portfolio-row" key={a.name}>
+                <div className="portfolio-row__left">
+                  <strong className="portfolio-row__pct">{a.pct}%</strong>
+                  <span className="portfolio-row__name">{a.name}</span>
+                </div>
+                <div className="portfolio-row__bar-wrap">
+                  <div className="portfolio-bar-track" aria-hidden="true">
+                    <span
+                      className="portfolio-bar-fill"
+                      style={{ width: `${a.pct}%`, background: a.color }}
+                    />
+                  </div>
+                </div>
+                <p className="portfolio-row__focus">{a.focus}</p>
+              </div>
+            ))}
+          </div>
+
+          <aside className="portfolio-meta">
+            <div className="portfolio-meta__block">
+              <p className="portfolio-meta__label">Base five-year contribution</p>
+              <p className="portfolio-meta__value">€110,400</p>
+            </div>
+            <div className="portfolio-meta__block">
+              <p className="portfolio-meta__label">Deployment</p>
+              <p className="portfolio-meta__value">Monthly</p>
+            </div>
+            <div className="portfolio-meta__block">
+              <p className="portfolio-meta__label">Rebalancing</p>
+              <p className="portfolio-meta__value">Quarterly</p>
+            </div>
+            <div className="portfolio-meta__block">
+              <p className="portfolio-meta__label">Allocation review</p>
+              <p className="portfolio-meta__value">Annual</p>
+            </div>
+            <div className="portfolio-meta__note">
+              <p>
+                55% global equities. 15% precious metals. 10% defensive yield.
+                5% oil/energy. 5% angel/opportunity.
+              </p>
+            </div>
+            <div className="portfolio-meta__caption">
+              Monthly allocation. Rebalanced quarterly. Reviewed annually. No
+              guaranteed returns.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      {/* Performance Scenarios */}
+      <section className="section scenarios-section" id="scenarios">
+        <div className="section-heading" data-reveal>
+          <p className="eyebrow">Performance Scenarios</p>
+          <h2>Scenario discipline, not return promises.</h2>
+        </div>
+        <p className="scenarios-intro" data-reveal>
+          Khan Ledger I does not forecast guaranteed returns. It uses scenario
+          planning. With a five-year base contribution of €110,400, the
+          vehicle&apos;s outcome depends on market returns, commodity cycles,
+          currency movement, and private opportunity performance.
+        </p>
+
+        <div className="scenarios-grid" data-reveal>
+          {scenarios.map((s) => (
+            <div
+              className={`scenario-card${s.label === "Base Case" ? " scenario-card--base" : ""}`}
+              key={s.label}
+            >
+              <p className="scenario-card__label">{s.label}</p>
+              <p className="scenario-card__rate">{s.rate} annual return</p>
+              <p className="scenario-card__value">{s.value}</p>
+              <p className="scenario-card__gain">{s.gain} vs contributions</p>
+              <p className="scenario-card__note">{s.note}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="scenarios-disclaimer" data-reveal>
+          <p>
+            Figures are illustrative only. All scenarios assume monthly
+            contributions per the five-year commitment schedule, with annual
+            compounding. Excludes tax, platform fees, FX costs, and any private
+            investment write-downs.
+          </p>
+          <p>
+            <strong>Ireland tax note:</strong> Irish ETF investments may be
+            subject to deemed disposal rules (taxable event every eight years),
+            exit tax, and income tax on distributions. The exit tax rate
+            moves to 38% from 2026. RK+ recommends reviewing personal and
+            structural tax treatment with a qualified Irish tax adviser before
+            implementation.
+          </p>
+        </div>
+      </section>
+
+      {/* RK+ Holdings Distribution */}
+      <section className="section holdings-section" id="holdings">
+        <div className="section-heading" data-reveal>
+          <p className="eyebrow">RK+ Holdings Distribution</p>
+          <h2>The full picture: land, markets, property, and private equity.</h2>
+        </div>
+        <p className="holdings-intro" data-reveal>
+          Khan Ledger I is the liquid monthly investment vehicle. But RK+
+          Holdings is weighted toward real assets and long-term ownership —
+          Bangladesh land and property forming the foundation, public markets
+          providing liquidity and compounding, and private equity creating room
+          for asymmetric upside.
+        </p>
+
+        <StackedBar segments={holdingsDistribution} />
+
         <div className="portfolio-table" data-reveal>
-          {allocations.map((a) => (
-            <div className="portfolio-row" key={a.name}>
+          {holdingsDistribution.map((h) => (
+            <div className="portfolio-row" key={h.name}>
               <div className="portfolio-row__left">
-                <strong className="portfolio-row__pct">{a.pct}%</strong>
-                <span className="portfolio-row__name">{a.name}</span>
+                <strong className="portfolio-row__pct">{h.pct}%</strong>
+                <span className="portfolio-row__name">{h.name}</span>
               </div>
               <div className="portfolio-row__bar-wrap">
                 <div className="portfolio-bar-track" aria-hidden="true">
                   <span
                     className="portfolio-bar-fill"
-                    style={{ width: `${a.pct}%`, background: a.color }}
+                    style={{ width: `${h.pct}%`, background: h.color }}
                   />
                 </div>
               </div>
-              <p className="portfolio-row__focus">{a.focus}</p>
+              <p className="portfolio-row__focus">{h.description}</p>
             </div>
           ))}
         </div>
+
+        <p className="holdings-caption" data-reveal>
+          RK+ Holdings is structured across land, property, public markets,
+          private equity, cash reserves, and international market exposure —
+          built around real assets, liquidity, and selective opportunity-taking.
+        </p>
       </section>
 
       {/* Partners — The RK Brothers */}
@@ -658,8 +907,8 @@ export function LandingPage() {
               will not be the last.
             </p>
             <p>
-              RK+ takes those lessons into a wider platform: markets,
-              ventures, property, land, and operating businesses.
+              RK+ takes those lessons into a wider platform: markets, ventures,
+              property, land, and operating businesses.
             </p>
           </article>
 
