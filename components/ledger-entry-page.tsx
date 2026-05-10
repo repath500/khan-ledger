@@ -22,7 +22,14 @@ function BrandIcon() {
   );
 }
 
+function estimateReadingTime(paragraphs: string[]): number {
+  const words = paragraphs.join(" ").split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 220));
+}
+
 export function LedgerEntryPage({ entry }: { entry: LedgerEntry }) {
+  const readingTime = estimateReadingTime(entry.paragraphs);
+
   return (
     <main className="site-shell entry-shell">
       <div className="paper-grain" aria-hidden="true" />
@@ -54,6 +61,7 @@ export function LedgerEntryPage({ entry }: { entry: LedgerEntry }) {
           <p className="entry-article__date">{entry.date}</p>
           <h1>{entry.title}</h1>
           <p className="entry-article__dek">{entry.dek}</p>
+          <span className="entry-article__reading">{readingTime} min read</span>
         </header>
         <div className="entry-article__prose">
           {entry.paragraphs.map((p, i) => (

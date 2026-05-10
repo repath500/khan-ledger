@@ -3,55 +3,65 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
-  ArrowRight,
+  ArrowUpRight,
   Buildings,
-  ChartLineUp,
-  Coins,
-  CompassRose,
-  FileText,
   Globe,
   Handshake,
-  HouseLine,
+  House,
+  MapPin,
   Mountains,
-  Pulse,
-  TreeStructure,
-  UsersThree
+  RocketLaunch,
+  Storefront,
+  Target,
+  TrendUp,
+  Users
 } from "@phosphor-icons/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const navItems = [
   { label: "About", href: "/about" },
+  { label: "Platform", href: "#vision" },
   { label: "Khan Ledger I", href: "#vehicle" },
   { label: "Partners", href: "#partners" },
-  { label: "Opportunities", href: "#opportunities" },
   { label: "Entries", href: "#entries" }
 ];
 
 const pillars = [
   {
-    icon: ChartLineUp,
+    icon: TrendUp,
     title: "Markets",
-    desc: "Global equities, ETFs, precious metals, and energy exposure through Khan Ledger I.",
-    accent: "var(--green)"
+    desc: "Global equities, ETFs, metals, and energy exposure."
   },
   {
-    icon: TreeStructure,
+    icon: RocketLaunch,
     title: "Ventures",
-    desc: "Angel cheques, operator-led deals, and founder-backed opportunities.",
-    accent: "var(--gold)"
+    desc: "Angel investments, operator-led deals, and founder-backed opportunities."
   },
   {
-    icon: HouseLine,
+    icon: Buildings,
     title: "Property",
-    desc: "Ireland, UK, and Bangladesh real estate interests and development.",
-    accent: "var(--olive)"
+    desc: "Ireland, UK, and Bangladesh real estate development."
   },
   {
     icon: Mountains,
     title: "Land",
-    desc: "Ancestral holdings in Moulvibazar — heritage, agriculture, and long-term value.",
-    accent: "var(--green-mid)"
+    desc: "Ancestral holdings in Moulvibazar — heritage and long-term value."
+  }
+];
+
+const visionItems = [
+  {
+    title: "Multiple Vehicles",
+    desc: "Khan Ledger I is the first. Future mandates, property strategies, and venture vehicles will follow as the platform matures."
+  },
+  {
+    title: "Cross-Border Reach",
+    desc: "Ireland, UK, Germany, and Bangladesh — four countries, distinct opportunities, shared governance."
+  },
+  {
+    title: "Generational Architecture",
+    desc: "Designed for family members to join, contribute, and grow with the platform across decades."
   }
 ];
 
@@ -66,51 +76,44 @@ const allocations = [
   { name: "Opportunity Sleeve", pct: 5, color: "#A0522D" }
 ];
 
-const scenarios = [
-  { label: "Bull", rate: "15%", value: "€139,723" },
-  { label: "Strong", rate: "10%", value: "€129,248" },
-  { label: "Base", rate: "7%", value: "€123,310" },
-  { label: "Defensive", rate: "3%", value: "€115,776" }
-];
-
 const brothers = [
   {
     name: "Rahath Khan",
     location: "Frankfurt",
     initials: "RK",
-    role: "Engineering & Property Oversight",
-    lens: "Systems thinking. Long-range discipline. Major commitment stress-testing."
+    role: "Engineering & Property",
+    lens: "Systems thinking. Long-range discipline. Structural stress-testing."
   },
   {
     name: "Reyad Khan",
     location: "London",
     initials: "RK",
-    role: "Operations & Risk Controls",
-    lens: "Business density. Operational hazards. Execution realism."
+    role: "Operations & Risk",
+    lens: "Operational hazards. Execution realism. Risk controls."
   },
   {
     name: "Repath Khan",
     location: "Ireland",
     initials: "RK",
     role: "Strategy & Allocation",
-    lens: "Capital allocation. Technology. Angel deal flow. Public documentation."
+    lens: "Capital allocation. Technology. Deal flow. Public documentation."
   },
   {
     name: "Rehan Khan",
     location: "Sanofi",
     initials: "RK",
     role: "Evidence & Diligence",
-    lens: "Laboratory-grade diligence. Healthcare opportunities. Signal from hype."
+    lens: "Laboratory-grade diligence. Data before conviction."
   }
 ];
 
 const opportunityTypes = [
-  { icon: UsersThree, title: "Founders & Startups" },
-  { icon: Buildings, title: "Local Businesses" },
-  { icon: HouseLine, title: "Property & Land" },
+  { icon: Users, title: "Founders & Startups" },
+  { icon: Storefront, title: "Local Businesses" },
+  { icon: House, title: "Property & Land" },
   { icon: Handshake, title: "Angel & Private Deals" },
-  { icon: CompassRose, title: "Bangladesh Ventures" },
-  { icon: ChartLineUp, title: "Operator-led Deals" }
+  { icon: MapPin, title: "Bangladesh Ventures" },
+  { icon: Target, title: "Operator-led Deals" }
 ];
 
 const entries = [
@@ -119,21 +122,21 @@ const entries = [
     slug: "why-rk-exists",
     title: "Why RK+ Exists",
     date: "May 2026",
-    line: "The brief history of a family that worked, and what we are building from here."
+    line: "The family story and what we build from here."
   },
   {
     id: "002",
     slug: "khan-ledger-i-the-mandate",
     title: "Khan Ledger I — The Mandate",
     date: "May 2026",
-    line: "How we structured the first vehicle, the allocation rationale, and our five-year discipline plan."
+    line: "Our first vehicle, the rationale, and the five-year plan."
   },
   {
     id: "003",
     slug: "our-first-allocation-strategy",
     title: "Our First Allocation Strategy",
     date: "June 2026",
-    line: "From Vanguard to Bangladesh land — the thinking behind every bucket in Khan Ledger I."
+    line: "The thinking behind every allocation bucket."
   }
 ] as const;
 
@@ -178,28 +181,10 @@ function AllocationRing({ segments }: { segments: { name: string; pct: number; c
             strokeDasharray={`${dash} ${gap}`}
             strokeDashoffset={-currentOffset}
             strokeLinecap="butt"
-            style={{ transition: "stroke-dashoffset 1s ease" }}
+            style={{ transition: "stroke-dashoffset 1s var(--ease-out)" }}
           />
         );
       })}
-      <text
-        x="50%"
-        y="46%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        className="alloc-ring__label"
-      >
-        €110,400
-      </text>
-      <text
-        x="50%"
-        y="58%"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        className="alloc-ring__sub"
-      >
-        5-year plan
-      </text>
     </svg>
   );
 }
@@ -241,35 +226,35 @@ export function LandingPage() {
 
     const ctx = gsap.context(() => {
       gsap.from("[data-hero]", {
-        y: 36,
+        y: 40,
         opacity: 0,
-        filter: "blur(6px)",
-        duration: 1.2,
-        stagger: 0.12,
+        filter: "blur(8px)",
+        duration: 1,
+        stagger: 0.1,
         ease: "power4.out"
       });
 
       gsap.from(".pillar-card", {
-        y: 60,
+        y: 48,
         opacity: 0,
-        scale: 0.96,
-        duration: 0.9,
-        stagger: 0.08,
-        delay: 0.5,
+        scale: 0.97,
+        duration: 0.8,
+        stagger: 0.07,
+        delay: 0.4,
         ease: "power3.out"
       });
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
-          { y: 44, opacity: 0, filter: "blur(8px)" },
+          { y: 36, opacity: 0, filter: "blur(6px)" },
           {
             y: 0,
             opacity: 1,
             filter: "blur(0px)",
-            duration: 0.9,
+            duration: 0.85,
             ease: "power4.out",
-            scrollTrigger: { trigger: el, start: "top 85%", once: true }
+            scrollTrigger: { trigger: el, start: "top 86%", once: true }
           }
         );
       });
@@ -277,16 +262,25 @@ export function LandingPage() {
       gsap.utils.toArray<HTMLElement>(".stack-card").forEach((card, i) => {
         gsap.fromTo(
           card,
-          { y: 60 + i * 12, opacity: 0, scale: 0.97 },
+          { y: 40 + i * 8, opacity: 0, scale: 0.98 },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            duration: 0.85,
+            duration: 0.75,
             ease: "power3.out",
             scrollTrigger: { trigger: card, start: "top 88%", once: true }
           }
         );
+      });
+
+      gsap.from(".vision-item", {
+        y: 32,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.09,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".vision-grid", start: "top 82%", once: true }
       });
 
       gsap.to(".route-line", {
@@ -319,7 +313,7 @@ export function LandingPage() {
           ))}
         </div>
         <a className="nav-cta" href="/contact">
-          Send Opportunity <ArrowRight size={12} weight="bold" />
+          Send Opportunity <ArrowUpRight size={12} weight="bold" />
         </a>
         <button
           className={`menu-button ${menuOpen ? "is-open" : ""}`}
@@ -354,23 +348,45 @@ export function LandingPage() {
 
       {/* ── Hero ── */}
       <section className="hero" id="top">
-        <div className="hero__inner">
-          <p className="eyebrow" data-hero>Private Family Capital</p>
-          <h1 data-hero>
-            Family capital across markets, ventures, property, and land.
-          </h1>
-          <p className="hero__tagline" data-hero>
-            Four brothers. Four cities. One platform for long-term wealth across public markets, private ventures, property, and ancestral land.
-          </p>
-          <div className="hero__actions" data-hero>
-            <a className="button button--primary" href="#vehicle">
-              <span>Explore Khan Ledger I</span>
-              <span className="button__icon"><ArrowRight size={14} weight="bold" /></span>
-            </a>
-            <a className="button button--secondary" href="/contact">
-              <span>Send an Opportunity</span>
-              <span className="button__icon"><ArrowRight size={14} weight="bold" /></span>
-            </a>
+        <div className="hero__layout">
+          <div className="hero__content">
+            <p className="eyebrow" data-hero>Private Holdings Group</p>
+            <h1 data-hero>
+              Capital for<br />the long arc.
+            </h1>
+            <p className="hero__tagline" data-hero>
+              RK+ Holdings is a private family capital platform investing across public markets, private ventures, property, and ancestral land — built by four brothers across four cities.
+            </p>
+            <div className="hero__actions" data-hero>
+              <a className="button button--primary" href="#vision">
+                <span>Our Platform</span>
+                <span className="button__icon"><ArrowUpRight size={14} weight="bold" /></span>
+              </a>
+              <a className="button button--secondary" href="/contact">
+                <span>Send Opportunity</span>
+                <span className="button__icon"><ArrowUpRight size={14} weight="bold" /></span>
+              </a>
+            </div>
+          </div>
+          <div className="hero__visual" data-hero>
+            <div className="hero__card">
+              <span className="hero__card-label">Investment Verticals</span>
+              <div className="hero__card-items">
+                {pillars.map((p) => {
+                  const Icon = p.icon;
+                  return (
+                    <div className="hero__card-item" key={p.title}>
+                      <Icon size={20} weight="regular" />
+                      <span>{p.title}</span>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="hero__card-geo">
+                <Globe size={13} weight="regular" />
+                <span>IE · UK · DE · BD</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -379,8 +395,8 @@ export function LandingPage() {
             const Icon = p.icon;
             return (
               <div className="pillar-card" key={p.title}>
-                <div className="pillar-card__icon" style={{ color: p.accent }}>
-                  <Icon size={28} weight="light" />
+                <div className="pillar-card__icon">
+                  <Icon size={22} weight="regular" />
                 </div>
                 <h3 className="pillar-card__title">{p.title}</h3>
                 <p className="pillar-card__desc">{p.desc}</p>
@@ -388,11 +404,27 @@ export function LandingPage() {
             );
           })}
         </div>
+      </section>
 
-        <p className="hero__geo" data-hero>
-          <Globe size={14} weight="bold" />
-          Ireland · London · Frankfurt · Sylhet · Moulvibazar
-        </p>
+      {/* ── Vision / Platform ── */}
+      <section className="section vision-section" id="vision">
+        <div className="vision-inner">
+          <div className="vision-head" data-reveal>
+            <p className="eyebrow eyebrow--light">The Platform</p>
+            <h2>Built for decades,<br />not quarters.</h2>
+            <p className="vision-sub">
+              RK+ Holdings is not a single fund. It is a family capital platform designed to scale across vehicles, asset classes, cities, and generations. Khan Ledger I is just the beginning.
+            </p>
+          </div>
+          <div className="vision-grid">
+            {visionItems.map((item) => (
+              <div className="vision-item" key={item.title}>
+                <h3 className="vision-item__title">{item.title}</h3>
+                <p className="vision-item__desc">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ── Khan Ledger I ── */}
@@ -400,22 +432,18 @@ export function LandingPage() {
         <div className="vehicle-hero" data-reveal>
           <div className="vehicle-hero__left">
             <p className="eyebrow">Khan Ledger I</p>
-            <h2>Five-year monthly<br />investment mandate.</h2>
+            <h2>The first formal<br />investment vehicle.</h2>
             <p className="vehicle-hero__sub">
-              Not a savings pot. Not a fund. A disciplined monthly contribution system across global markets, metals, energy, and an opportunity sleeve for founders and operators.
+              A disciplined five-year monthly mandate across global equities, metals, energy, and an opportunity sleeve for founder and operator-led deals.
             </p>
             <div className="vehicle-facts">
-              <div className="vehicle-fact">
-                <span className="vehicle-fact__value">€110,400</span>
-                <span className="vehicle-fact__label">Planned 5yr contributions</span>
-              </div>
               <div className="vehicle-fact">
                 <span className="vehicle-fact__value">5 years</span>
                 <span className="vehicle-fact__label">2026 – 2030</span>
               </div>
               <div className="vehicle-fact">
                 <span className="vehicle-fact__value">Monthly</span>
-                <span className="vehicle-fact__label">Deployment cadence</span>
+                <span className="vehicle-fact__label">Deployment</span>
               </div>
               <div className="vehicle-fact">
                 <span className="vehicle-fact__value">Quarterly</span>
@@ -439,29 +467,13 @@ export function LandingPage() {
             </div>
           </div>
         </div>
-
-        <div className="scenarios-strip" data-reveal>
-          <p className="scenarios-strip__label">
-            <Pulse size={16} weight="bold" />
-            Compounding scenarios (pre-tax, pre-friction)
-          </p>
-          <div className="scenarios-strip__items">
-            {scenarios.map((s) => (
-              <div className="scenario-chip" key={s.label}>
-                <span className="scenario-chip__label">{s.label}</span>
-                <span className="scenario-chip__value">{s.value}</span>
-                <span className="scenario-chip__rate">{s.rate}/yr</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* ── Partners ── */}
       <section className="section partners-section" id="partners">
         <div className="section-heading" data-reveal>
           <p className="eyebrow">The RK Brothers</p>
-          <h2>One family. Multiple cities. Shared capital.</h2>
+          <h2>One family. Four cities.<br />Shared capital.</h2>
         </div>
 
         <div className="brothers-row">
@@ -489,7 +501,7 @@ export function LandingPage() {
             <h2>Actively reviewing founders, operators, and asset owners.</h2>
             <a className="button button--primary" href="/contact">
               <span>Share an Opportunity</span>
-              <span className="button__icon"><ArrowRight size={14} weight="bold" /></span>
+              <span className="button__icon"><ArrowUpRight size={14} weight="bold" /></span>
             </a>
             <p className="opp-section__note">
               We review opportunities privately. We do not manage outside capital or offer financial advice.
@@ -500,7 +512,7 @@ export function LandingPage() {
               const Icon = opp.icon;
               return (
                 <div className="opp-tile" key={opp.title}>
-                  <Icon size={22} weight="light" />
+                  <Icon size={20} weight="regular" />
                   <span>{opp.title}</span>
                 </div>
               );
@@ -513,55 +525,48 @@ export function LandingPage() {
       <section className="section entries-section" id="entries">
         <div className="entries-head" data-reveal>
           <p className="eyebrow">Entries</p>
-          <h2>We show the first page, not the highlight reel.</h2>
+          <h2>The first page,<br />not the highlight reel.</h2>
         </div>
         <div className="entry-stack">
           {entries.map((entry) => (
             <Link key={entry.id} href={`/entries/${entry.slug}`} className="stack-card-link">
               <article className="stack-card">
-                <span>{entry.id}</span>
-                <div>
-                  <p>{entry.date}</p>
+                <span className="stack-card__id">{entry.id}</span>
+                <div className="stack-card__body">
+                  <span className="stack-card__date">{entry.date}</span>
                   <h3>{entry.title}</h3>
-                  <small>{entry.line}</small>
+                  <p>{entry.line}</p>
                 </div>
-                <ArrowRight size={20} weight="light" aria-hidden />
+                <ArrowUpRight size={18} weight="regular" className="stack-card__arrow" aria-hidden />
               </article>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ── Commitment strip ── */}
-      <section className="commitment-strip" data-reveal>
-        <div className="commitment-strip__inner">
-          <Coins size={28} weight="light" />
-          <div className="commitment-strip__text">
-            <span>Five-year contribution schedule</span>
-            <strong>€110,400</strong>
-          </div>
-          <p className="commitment-strip__note">
-            Starts at €100/brother/month in Year 1, scaling to €800/brother/month by Year 4–5. Disciplined escalation, not a lump sum.
-          </p>
-        </div>
-      </section>
-
       {/* ── Footer ── */}
       <footer className="footer">
-        <div className="footer-brand">
-          <span className="footer-rk">RK+</span>
-          <strong>Holdings</strong>
+        <div className="footer__inner">
+          <div className="footer-brand">
+            <span className="footer-rk">RK+</span>
+            <strong>Holdings</strong>
+          </div>
+          <p className="footer__disc">
+            RK+ Holdings and Khan Ledger I are private family capital projects.
+            We do not manage outside capital, offer financial advice, or operate
+            as a regulated investment fund.
+          </p>
+          <div className="footer__bottom">
+            <span className="footer-geo">
+              <Globe size={13} weight="regular" />
+              Ireland · London · Frankfurt · Sylhet · Moulvibazar
+            </span>
+            <div className="footer__links">
+              <Link href="/about">About</Link>
+              <Link href="/contact">Contact</Link>
+            </div>
+          </div>
         </div>
-        <p>
-          RK+ Holdings and Khan Ledger I are private family capital projects.
-          We do not manage outside capital, offer financial advice, or operate
-          as a regulated investment fund. Public documentation is shared for
-          transparency, learning, and relationship-building only.
-        </p>
-        <span className="footer-geo">
-          <FileText size={13} weight="light" />
-          Ireland · London · Frankfurt · Sylhet · Moulvibazar
-        </span>
       </footer>
     </main>
   );

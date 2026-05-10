@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { ArrowRight } from "@phosphor-icons/react";
+import { ArrowUpRight } from "@phosphor-icons/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -134,10 +134,10 @@ export function AboutPage() {
           <Link href="/#entries">Entries</Link>
         </div>
         <Link className="contact-back" href="/">
-          <ArrowRight
+          <ArrowUpRight
             size={13}
             weight="bold"
-            style={{ transform: "rotate(180deg)" }}
+            style={{ transform: "rotate(225deg)" }}
           />
           Home
         </Link>
@@ -485,7 +485,7 @@ export function AboutPage() {
             </p>
             <Link href="/#vehicle" className="about-ledger__link">
               Explore the full mandate
-              <ArrowRight size={13} weight="bold" />
+              <ArrowUpRight size={13} weight="bold" />
             </Link>
           </div>
 
@@ -541,13 +541,13 @@ export function AboutPage() {
             <Link className="button button--primary" href="/contact">
               <span>Send an Opportunity</span>
               <span className="button__icon">
-                <ArrowRight size={14} weight="bold" />
+                <ArrowUpRight size={14} weight="bold" />
               </span>
             </Link>
             <Link className="button button--secondary" href="/">
               <span>Back to Holdings</span>
               <span className="button__icon">
-                <ArrowRight size={14} weight="bold" />
+                <ArrowUpRight size={14} weight="bold" />
               </span>
             </Link>
           </div>

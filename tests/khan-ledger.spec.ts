@@ -13,7 +13,7 @@ test.describe("Khan Ledger public pages", () => {
     await expect(page).toHaveTitle(/RK\+\s*Holdings/);
     await expect(
       page.getByRole("heading", {
-        name: "Family capital across markets, ventures, property, and land."
+        name: /Capital for\s+the long arc\./
       })
     ).toBeVisible();
     await expect(page.getByRole("link", { name: /Send Opportunity/i }).first()).toBeVisible();
