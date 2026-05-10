@@ -82,10 +82,10 @@ export function ContactPage() {
           </span>
         </Link>
         <div className="nav-links">
+          <Link href="/about">About</Link>
           <Link href="/#vehicle">Khan Ledger I</Link>
           <Link href="/#portfolio">Portfolio</Link>
           <Link href="/#partners">Partners</Link>
-          <Link href="/#family">Family</Link>
           <Link href="/#entries">Entries</Link>
         </div>
         <Link className="contact-back" href="/">

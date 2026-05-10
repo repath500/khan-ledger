@@ -38,6 +38,7 @@ export function LedgerEntryPage({ entry }: { entry: LedgerEntry }) {
           </span>
         </Link>
         <div className="nav-links">
+          <Link href="/about">About</Link>
           <Link href="/#vehicle">Khan Ledger I</Link>
           <Link href="/#entries">Entries</Link>
         </div>
