@@ -8,6 +8,7 @@ import {
   Buildings,
   CompassRose,
   EnvelopeSimple,
+  HouseLine,
   MapPinLine,
   PaperPlaneTilt,
   SealCheck,
@@ -17,19 +18,19 @@ import {
 const contactEmail = "repath500@gmail.com";
 
 const opportunityTypes = [
-  { label: "Property", icon: Buildings },
+  { label: "Property", icon: HouseLine },
   { label: "Bangladesh land", icon: MapPinLine },
   { label: "Founder / startup", icon: UsersThree },
-  { label: "Local business", icon: CompassRose }
+  { label: "Local business", icon: Buildings },
+  { label: "Other opportunity", icon: CompassRose }
 ];
 
-function Monogram() {
+function BrandIcon() {
   return (
-    <svg className="monogram" viewBox="0 0 96 96" aria-hidden="true">
-      <path d="M18 78V18h9v27l26-27h12L38 46l30 32H55L27 49v29H18Z" />
-      <path d="M69 18v60h-9V18h9Z" />
-      <path d="M31 72c12-8 25-8 37 0" fill="none" strokeWidth="3" />
-      <circle cx="48" cy="58" r="4.5" />
+    <svg className="brand-icon" viewBox="0 0 36 36" aria-hidden="true" fill="none">
+      <rect width="36" height="36" rx="3" fill="currentColor" />
+      <rect x="16.5" y="8" width="3" height="20" fill="#B99044" />
+      <rect x="8" y="16.5" width="20" height="3" fill="#B99044" />
     </svg>
   );
 }
@@ -44,7 +45,7 @@ export function ContactPage() {
   const [status, setStatus] = useState("");
 
   const mailtoHref = useMemo(() => {
-    const subject = `Khan Ledger opportunity: ${form.type || "General"}`;
+    const subject = `RK+ Holdings opportunity: ${form.type || "General"}`;
     const body = [
       `Name: ${form.name}`,
       `Email: ${form.email}`,
@@ -56,10 +57,7 @@ export function ContactPage() {
     return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }, [form]);
 
-  function updateField(
-    field: keyof typeof form,
-    value: string
-  ) {
+  function updateField(field: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
@@ -74,35 +72,40 @@ export function ContactPage() {
       <div className="paper-grain" aria-hidden="true" />
 
       <nav className="nav-shell contact-nav" aria-label="Contact navigation">
-        <Link className="brand-mark" href="/" aria-label="Khan Ledger home">
+        <Link className="brand-mark" href="/" aria-label="RK+ Holdings home">
           <span className="brand-mark__icon">
-            <Monogram />
+            <BrandIcon />
           </span>
-          <span>Khan Ledger</span>
+          <span className="brand-mark__wordmark">
+            <span className="brand-mark__name">RK+</span>
+            <span className="brand-mark__sub">Holdings</span>
+          </span>
         </Link>
         <div className="nav-links">
-          <Link href="/#ledger">Ledger</Link>
+          <Link href="/#vehicle">Khan Ledger I</Link>
           <Link href="/#portfolio">Portfolio</Link>
+          <Link href="/#partners">Partners</Link>
+          <Link href="/#family">Family</Link>
           <Link href="/#entries">Entries</Link>
-          <Link href="/#story">Story</Link>
         </div>
         <Link className="contact-back" href="/">
-          <ArrowLeft size={16} weight="bold" />
-          Home
+          <ArrowLeft size={14} weight="bold" />
+          Back
         </Link>
       </nav>
 
       <section className="contact-hero">
         <div className="contact-copy">
-          <p className="eyebrow">Contact Khan Ledger</p>
+          <p className="eyebrow">Send an Opportunity</p>
           <h1>Share an opportunity with a clear record.</h1>
           <p className="hero-lede">
             Send property leads, land questions, founder notes, local business
-            ideas, or useful introductions. We review opportunities as a family
-            capital journal, not as a fund or outside-money manager.
+            ideas, or useful introductions. RK+ reviews opportunities as a
+            private family capital platform — not as a fund or outside-money
+            manager.
           </p>
           <div className="contact-email-pill">
-            <EnvelopeSimple size={20} weight="light" />
+            <EnvelopeSimple size={18} weight="light" />
             <span>{contactEmail}</span>
           </div>
         </div>
@@ -116,7 +119,7 @@ export function ContactPage() {
                 name="name"
                 autoComplete="name"
                 value={form.name}
-                onChange={(event) => updateField("name", event.target.value)}
+                onChange={(e) => updateField("name", e.target.value)}
                 required
                 placeholder="Your name"
               />
@@ -130,7 +133,7 @@ export function ContactPage() {
                 type="email"
                 autoComplete="email"
                 value={form.email}
-                onChange={(event) => updateField("email", event.target.value)}
+                onChange={(e) => updateField("email", e.target.value)}
                 required
                 placeholder="you@example.com"
               />
@@ -147,10 +150,10 @@ export function ContactPage() {
                       name="type"
                       value={item.label}
                       checked={form.type === item.label}
-                      onChange={(event) => updateField("type", event.target.value)}
+                      onChange={(e) => updateField("type", e.target.value)}
                     />
                     <span>
-                      <Icon size={18} weight="light" />
+                      <Icon size={16} weight="light" />
                       {item.label}
                     </span>
                   </label>
@@ -164,7 +167,7 @@ export function ContactPage() {
                 id="message"
                 name="message"
                 value={form.message}
-                onChange={(event) => updateField("message", event.target.value)}
+                onChange={(e) => updateField("message", e.target.value)}
                 required
                 rows={7}
                 placeholder="What is it, who is involved, where is it based, and why should we look at it?"
@@ -174,13 +177,13 @@ export function ContactPage() {
             <button className="button button--primary contact-submit" type="submit">
               <span>Prepare email</span>
               <span className="button__icon">
-                <PaperPlaneTilt size={16} weight="bold" />
+                <PaperPlaneTilt size={15} weight="bold" />
               </span>
             </button>
 
             <a className="direct-email-link" href={mailtoHref}>
               Open email directly
-              <ArrowRight size={16} weight="bold" />
+              <ArrowRight size={14} weight="bold" />
             </a>
 
             <p className="form-status" aria-live="polite">
@@ -192,20 +195,21 @@ export function ContactPage() {
 
       <section className="contact-principles">
         <article>
-          <SealCheck size={26} weight="light" />
+          <SealCheck size={24} weight="light" />
           <h2>What helps us review faster</h2>
           <p>
             Clear numbers, location, timeline, who is involved, what could go
-            wrong, and why the opportunity fits a family-built long-term ledger.
+            wrong, and why the opportunity fits a long-term family capital
+            platform with roots in Ireland and Bangladesh.
           </p>
         </article>
         <article>
-          <SealCheck size={26} weight="light" />
+          <SealCheck size={24} weight="light" />
           <h2>What this is not</h2>
           <p>
-            Khan Ledger does not raise capital, manage outside money, or provide
-            financial advice. Contact is for ideas, leads, introductions, and
-            documentation.
+            RK+ Holdings does not raise capital, manage outside money, or
+            provide financial advice. Contact is for opportunities, leads,
+            introductions, and relationship-building only.
           </p>
         </article>
       </section>
