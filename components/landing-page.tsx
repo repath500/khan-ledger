@@ -17,11 +17,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const navItems = [
+  { label: "About", href: "/about" },
   { label: "Khan Ledger I", href: "#vehicle" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Holdings", href: "#holdings" },
   { label: "Partners", href: "#partners" },
-  { label: "Family", href: "#family" },
   { label: "Opportunities", href: "#opportunities" },
   { label: "Entries", href: "#entries" }
 ];
