@@ -8,15 +8,24 @@ async function expectNoHorizontalOverflow(page: Page) {
 }
 
 test.describe("Khan Ledger public pages", () => {
-  test("home page renders the ledger landing page", async ({ page }) => {
+  test("home page renders the RK+ landing page", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Khan Ledger/);
+    await expect(page).toHaveTitle(/RK\+\s*Holdings/);
     await expect(
       page.getByRole("heading", {
-        name: "A public family capital journal, built month by month."
+        name: "Family capital across markets, ventures, property, and land."
       })
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "Contact" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Send Opportunity/i }).first()).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test("journal entry opens from the Entries stack", async ({ page }) => {
+    await page.goto("/#entries");
+    await page.locator("a.stack-card-link").filter({ hasText: "Why RK+" }).click();
+    await expect(page).toHaveURL(/\/entries\/why-rk-exists/);
+    await expect(page.getByRole("heading", { level: 1, name: "Why RK+ Exists" })).toBeVisible();
+    await expect(page.getByText(/Masud Khan/, { exact: false })).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 

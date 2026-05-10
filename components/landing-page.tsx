@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -27,7 +28,7 @@ const navItems = [
 
 const metrics = [
   { value: "5 years", label: "First vehicle term" },
-  { value: "€110,400", label: "Base commitment" },
+  { value: "€110,400", label: "Planned contributions (5 yr)" },
   { value: "4", label: "General Partners" },
   { value: "4 cities", label: "Cross-border presence" }
 ];
@@ -101,18 +102,11 @@ const allocations = [
 
 const scenarios = [
   {
-    label: "Defensive",
-    rate: "3%",
-    value: "€115,776",
-    gain: "+€5,376",
-    note: "Conservative conditions. Bonds outperform equities."
-  },
-  {
-    label: "Base Case",
-    rate: "7%",
-    value: "€123,310",
-    gain: "+€12,910",
-    note: "Moderate global growth. Equities steady, metals stable."
+    label: "Bull Case",
+    rate: "15%",
+    value: "€139,723",
+    gain: "+€29,323",
+    note: "Strong rally. Opportunity sleeve delivers at least one win."
   },
   {
     label: "Strong Case",
@@ -122,11 +116,18 @@ const scenarios = [
     note: "Good market conditions. Commodities hold their ground."
   },
   {
-    label: "Bull Case",
-    rate: "15%",
-    value: "€139,723",
-    gain: "+€29,323",
-    note: "Strong rally. Opportunity sleeve delivers at least one win."
+    label: "Base Case",
+    rate: "7%",
+    value: "€123,310",
+    gain: "+€12,910",
+    note: "Moderate global growth. Equities steady, metals stable."
+  },
+  {
+    label: "Defensive",
+    rate: "3%",
+    value: "€115,776",
+    gain: "+€5,376",
+    note: "Conservative conditions. Bonds outperform equities."
   }
 ];
 
@@ -180,9 +181,9 @@ const brothers = [
     name: "Rahath Khan",
     role: "General Partner",
     location: "Frankfurt",
-    bio: "Eldest brother and senior family lead. Rahath brings long-term judgement and measured decision-making to RK+. As the eldest, he carries the senior voice in major family decisions — especially around property, land, and long-term commitments.",
+    bio: "Mechanical engineer and eldest brother. Rahath brings systems thinking, load-path judgement, and long-range discipline to RK+ — from how physical assets behave to how major property and land commitments should be stress-tested before capital moves.",
     focus: [
-      "Family stewardship",
+      "Engineering-led feasibility review",
       "Property and land oversight",
       "Long-term capital discipline",
       "Europe-based opportunity awareness",
@@ -190,10 +191,23 @@ const brothers = [
     ]
   },
   {
+    name: "Reyad Khan",
+    role: "General Partner",
+    location: "London",
+    bio: "Health and safety specialist based in London. Reyad connects RK+ to global business density while forcing uncomfortable operational questions early — hazards, controls, site realities — before capital meets concrete and contracts.",
+    focus: [
+      "London opportunity network",
+      "Operational risk and controls mindset",
+      "Site and workplace feasibility",
+      "Founder and small-business conversations",
+      "Execution realism checks"
+    ]
+  },
+  {
     name: "Repath Khan",
     role: "General Partner",
     location: "Ireland",
-    bio: "Initiator of Khan Ledger I, driving the strategy, branding, documentation, and venture thinking behind RK+. Repath brings a builder mindset — turning ideas into systems, investment memos, and public documentation.",
+    bio: "Initiator of Khan Ledger I and builder of LeemerChat.com and critique.sh — products that reward clarity, structured critique, and honest iteration. Repath carries that operator mindset into allocation memos, public documentation, and venture conversations.",
     focus: [
       "Strategy and capital allocation",
       "Technology and AI opportunities",
@@ -203,28 +217,15 @@ const brothers = [
     ]
   },
   {
-    name: "Reyad Khan",
-    role: "General Partner",
-    location: "London",
-    bio: "Based in London, Reyad connects RK+ to one of the world's most important business and financial cities. His role is practical and opportunity-focused — evaluating whether ideas can work in the real world, not just on paper.",
-    focus: [
-      "London opportunity network",
-      "Practical business evaluation",
-      "Operations and execution review",
-      "Founder and small-business conversations",
-      "Risk and feasibility checks"
-    ]
-  },
-  {
     name: "Rehan Khan",
     role: "General Partner",
-    location: "Operations",
-    bio: "Rehan brings ground-level execution experience from family business and food operations. He understands the daily pressure of real businesses: customers, quality, suppliers, service, timing, and consistency.",
+    location: "Sanofi",
+    bio: "Scientist at Sanofi — early-career, evidence-led, and trained to separate signal from hype. Rehan brings laboratory-grade diligence to venture claims, healthcare-adjacent opportunities, and any thesis that leans on science without data.",
     focus: [
-      "Operating business review",
-      "Food and hospitality insight",
-      "Local business execution",
-      "Quality and customer experience",
+      "Evidence and diligence culture",
+      "Healthcare and science-linked opportunities",
+      "Structured experimentation mindset",
+      "Quality systems thinking",
       "Practical support for backed businesses"
     ]
   }
@@ -310,23 +311,26 @@ const years = [
 const entries = [
   {
     id: "001",
+    slug: "why-rk-exists",
     title: "Why RK+ Exists",
     date: "May 2026",
     line: "The brief history of a family that worked, and what we are building from here."
   },
   {
     id: "002",
+    slug: "khan-ledger-i-the-mandate",
     title: "Khan Ledger I — The Mandate",
     date: "May 2026",
     line: "How we structured the first vehicle, the allocation rationale, and our five-year discipline plan."
   },
   {
     id: "003",
+    slug: "our-first-allocation-strategy",
     title: "Our First Allocation Strategy",
     date: "June 2026",
     line: "From Vanguard to Bangladesh land — the thinking behind every bucket in Khan Ledger I."
   }
-];
+] as const;
 
 function BrandIcon() {
   return (
@@ -588,7 +592,7 @@ export function LandingPage() {
 
             <div className="vehicle-stats">
               <div className="vehicle-stat">
-                <span>Base commitment</span>
+                <span>Planned contributions</span>
                 <strong>€110,400</strong>
               </div>
               <div className="vehicle-stat">
@@ -668,7 +672,7 @@ export function LandingPage() {
             <p className="kl1-value">5 years (2026–2030)</p>
           </div>
           <div className="kl1-card__col">
-            <p className="kl1-label">Base Commitment</p>
+            <p className="kl1-label">Planned contributions (5 yr)</p>
             <p className="kl1-value">€110,400</p>
           </div>
           <div className="kl1-card__col">
@@ -724,7 +728,7 @@ export function LandingPage() {
 
           <aside className="portfolio-meta">
             <div className="portfolio-meta__block">
-              <p className="portfolio-meta__label">Base five-year contribution</p>
+              <p className="portfolio-meta__label">Five-year contribution schedule</p>
               <p className="portfolio-meta__value">€110,400</p>
             </div>
             <div className="portfolio-meta__block">
@@ -756,20 +760,22 @@ export function LandingPage() {
       {/* Performance Scenarios */}
       <section className="section scenarios-section" id="scenarios">
         <div className="section-heading" data-reveal>
-          <p className="eyebrow">Performance Scenarios</p>
-          <h2>Scenario discipline, not return promises.</h2>
+          <p className="eyebrow">Compounding scenarios</p>
+          <h2>What the ledger could grow to — before tax and frictions.</h2>
         </div>
         <p className="scenarios-intro" data-reveal>
-          Khan Ledger I does not forecast guaranteed returns. It uses scenario
-          planning. With a five-year base contribution of €110,400, the
-          vehicle&apos;s outcome depends on market returns, commodity cycles,
-          currency movement, and private opportunity performance.
+          Khan Ledger I does not promise returns. It does show what disciplined
+          monthly investing might produce under different annual growth paths,
+          holding everything else equal — so you can see upside first, stress
+          cases second. Amounts are model outputs, not forecasts; real outcomes
+          include taxes, fees, FX, and private write-downs that a spreadsheet
+          will never perfectly capture.
         </p>
 
         <div className="scenarios-grid" data-reveal>
           {scenarios.map((s) => (
             <div
-              className={`scenario-card${s.label === "Base Case" ? " scenario-card--base" : ""}`}
+              className={`scenario-card${s.label === "Bull Case" ? " scenario-card--highlight" : ""}`}
               key={s.label}
             >
               <p className="scenario-card__label">{s.label}</p>
@@ -781,20 +787,13 @@ export function LandingPage() {
           ))}
         </div>
 
-        <div className="scenarios-disclaimer" data-reveal>
+        <div className="scenarios-disclaimer scenarios-disclaimer--compact" data-reveal>
           <p>
-            Figures are illustrative only. All scenarios assume monthly
-            contributions per the five-year commitment schedule, with annual
-            compounding. Excludes tax, platform fees, FX costs, and any private
-            investment write-downs.
-          </p>
-          <p>
-            <strong>Ireland tax note:</strong> Irish ETF investments may be
-            subject to deemed disposal rules (taxable event every eight years),
-            exit tax, and income tax on distributions. The exit tax rate
-            moves to 38% from 2026. RK+ recommends reviewing personal and
-            structural tax treatment with a qualified Irish tax adviser before
-            implementation.
+            Tax treatment depends on your residence and legal structure. Irish ETF
+            holdings may be subject to deemed disposal and exit tax (including
+            scheduled rate changes). RK+ may evaluate US registration if it
+            improves access to certain investments and tax-efficient incentives — confirm
+            any structural decision with a qualified cross-border adviser.
           </p>
         </div>
       </section>
@@ -998,7 +997,7 @@ export function LandingPage() {
           </p>
           <div className="total-card">
             <Coins size={24} weight="light" />
-            <span>Base five-year commitment before returns</span>
+            <span>Five-year contribution schedule (before returns)</span>
             <strong>€110,400</strong>
           </div>
           <p className="total-note">
@@ -1037,15 +1036,21 @@ export function LandingPage() {
         </div>
         <div className="entry-stack">
           {entries.map((entry) => (
-            <article className="stack-card" key={entry.id}>
-              <span>{entry.id}</span>
-              <div>
-                <p>{entry.date}</p>
-                <h3>{entry.title}</h3>
-                <small>{entry.line}</small>
-              </div>
-              <ArrowRight size={20} weight="light" />
-            </article>
+            <Link
+              key={entry.id}
+              href={`/entries/${entry.slug}`}
+              className="stack-card-link"
+            >
+              <article className="stack-card">
+                <span>{entry.id}</span>
+                <div>
+                  <p>{entry.date}</p>
+                  <h3>{entry.title}</h3>
+                  <small>{entry.line}</small>
+                </div>
+                <ArrowRight size={20} weight="light" aria-hidden />
+              </article>
+            </Link>
           ))}
         </div>
       </section>
